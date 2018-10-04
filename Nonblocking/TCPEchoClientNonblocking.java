@@ -9,12 +9,15 @@ import java.nio.channels.SocketChannel;
 
 public class TCPEchoClientNonblocking {
 
+	private static final int BUFSIZE = 256;
+	
 	public static void main(String[] args) throws IOException {
 		if ((args.length < 2) || (args.length > 3))
 			throw new IllegalArgumentException("<Server> <Word> [<Port>]");
 		
 		String server = args[0];
-		byte[] argument = args[1].getBytes();
+		byte[] argument = new byte[BUFSIZE];
+		argument = args[1].getBytes();
 		
 		int port = (args.length == 3) ? Integer.parseInt(args[2]) : 7;
 		
@@ -29,7 +32,7 @@ public class TCPEchoClientNonblocking {
 		}
 		
 		ByteBuffer writeBuf = ByteBuffer.wrap(argument);
-		ByteBuffer readBuf = ByteBuffer.allocate(argument.length);
+		ByteBuffer readBuf = ByteBuffer.allocate(BUFSIZE);
 		int totalBytesRcvd = 0;
 		int bytesRcvd;
 		
